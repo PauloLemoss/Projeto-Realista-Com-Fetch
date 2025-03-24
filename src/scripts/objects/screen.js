@@ -15,11 +15,20 @@ const screen = {
         let repositoriesItens = ''
         user.repositories.forEach(repo =>repositoriesItens += `<li>  <a href="${repo.html_url}" target = "_blank">${repo.name} </a> 
             
-                <p> forks: ${repo.forks_count} </p>
-                <p> stars: ${repo.stargazers_count} </p>
-                <p> watchers: ${repo.watchers_count} </p>
-                <p> Languages: ${repo.language ?? 'Não especificado'} </p>
-
+                 <div class="repo-details">
+                    <p class="repo-forks">
+                    <i class="fas fa-code-branch"></i> ${repo.forks_count}
+                    </p>
+                    <p class="repo-stars">
+                    <i class="fas fa-star"></i> ${repo.stargazers_count}
+                    </p>
+                    <p class="repo-watchers">
+                    <i class="fas fa-eye"></i> ${repo.watchers_count}
+                    </p>
+                    <p class="repo-language">
+                    <i class="fas fa-laptop-code"></i> ${repo.language ?? 'Não especificado'}
+                    </p>
+                </div>
             
             </li>`)
         
@@ -38,10 +47,10 @@ const screen = {
         user.events.forEach(event =>{
             if(event.type === "PushEvent"){
                 eventsItems += `<li>
-                <strong>${event.repo.name}</strong>: ${event.payload.commits ? event.payload.commits[0].message : "Sem mensagem de commit"} </li> `
+                <strong class="repo-name">${event.repo.name}</strong> - <span class= "commit-message"> ${event.payload.commits ? event.payload.commits[0].message : "Sem mensagem de commit"}</span> </li> `
             }else if(event.type === "CreateEvent"){
                 eventsItems += `<li> 
-                <strong>${event.repo.name}</strong>: Sem mensagem de commit </li>`
+                <strong class="repo-name" >${event.repo.name}</strong> - <span class="commit-message"> Sem mensagem de commit </span> </li>`
             }
         })
 
@@ -50,6 +59,10 @@ const screen = {
                 <h2>Últimos Eventos</h2>
                 <ul>${eventsItems}</ul>
             </div>`
+        }else{
+            this.useProfile.innerHTML += `<div class="events section">
+            <h2">Sem eventos recentes</h2>
+        </div>`;
         }
 
 
